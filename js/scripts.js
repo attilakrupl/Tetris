@@ -11,6 +11,7 @@ const shapes = [
   [0, 7, 0, 0, 7, 7, 7, 0],
 ]
 var gameBoard = createGameBoard();
+var container = document.querySelector('.container');
 
 function selectRandomShape() {
   return shapes[Math.floor(Math.random() * 7)];
@@ -18,15 +19,26 @@ function selectRandomShape() {
 
 function insertShape() {
   var shapeToDisplay = selectRandomShape();
-  gameBoard[0][3] = shapeToDisplay[0];
-  gameBoard[0][4] = shapeToDisplay[1];
-  gameBoard[0][5] = shapeToDisplay[2];
-  gameBoard[0][6] = shapeToDisplay[3];
-  gameBoard[1][3] = shapeToDisplay[4];
-  gameBoard[1][4] = shapeToDisplay[5];
-  gameBoard[1][5] = shapeToDisplay[6];
-  gameBoard[1][6] = shapeToDisplay[7];
-  populateDOM();
+  var m = 0
+  var n = 1
+  function doShit() {
+    gameBoard[m][3] = shapeToDisplay[0];
+    gameBoard[m][4] = shapeToDisplay[1];
+    gameBoard[m][5] = shapeToDisplay[2];
+    gameBoard[m][6] = shapeToDisplay[3];
+    gameBoard[n][3] = shapeToDisplay[4];
+    gameBoard[n][4] = shapeToDisplay[5];
+    gameBoard[n][5] = shapeToDisplay[6];
+    gameBoard[n][6] = shapeToDisplay[7];
+    populateDOM();
+    m++;
+    n++;
+  }
+
+doShit();
+//   while(m!=13) {
+//     setTimeout(doShit(), 1000);
+//   }
 }
 
 function createGameBoard() {
@@ -41,18 +53,18 @@ function createGameBoard() {
 }
 
 function populateDOM() {
+  container.innerHTML="";
   for (var k = 0; k < 150; k++) {
     var new_div = document.createElement('div');
     new_div.classList.add('smallDiv');
     new_div.classList.add(colorList[gameBoard[parseInt(k/10)][k%10]]);
-    var container = document.querySelector('.container');
     container.appendChild(new_div);
   }
 }
 
 function main() {
-
   insertShape();
+
 }
 
 main();
