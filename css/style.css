@@ -7,14 +7,14 @@
   flex-wrap: wrap;
 }
 
-.blanket {
+/*.blanket {
   background-color: white;
   height: 80px;
   width: 440px;
   border: 1px solid black;
   position: fixed;
   box-sizing: border-box;
-}
+}*/
 
 .smallDiv {
   height: 6.66%;
@@ -41,4 +41,16 @@
 
 .greenDiv {
     background-color: green;
+}
+
+.whiteDiv {
+    background-color: white;
+}
+
+.orangeDiv {
+    background-color: orange;
+}
+
+.aquamarineDiv {
+    background-color: aquamarine;
 }
