@@ -1,0 +1,25 @@
+.container {
+  background-color: green;
+  height: 600px;
+  width: 440px;
+  border: 1px solid black;
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.blanket {
+  background-color: white;
+  height: 80px;
+  width: 440px;
+  border: 1px solid black;
+  position: fixed;
+  box-sizing: border-box;
+}
+
+.emptyDiv {
+  height: 6.66%;
+  width: 10%;
+  background-color: red;
+  border: 1px black solid;
+  box-sizing: border-box;
+}
