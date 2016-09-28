@@ -1,11 +1,12 @@
 "use strict";
 
+
 const colorList = ["emptyDiv", "redDiv", "blueDiv", "yellowDiv", "greenDiv", "whiteDiv", "orangeDiv", "aquamarineDiv" ];
 const shapes = [
   [0, 0, 1, 0, 1, 1, 1, 0],
   [0, 2, 0, 0, 0, 2, 2, 2],
   [0, 3, 3, 0, 0, 3, 3, 0],
-  [0, 4, 4, 0, 0, 0, 4, 4],
+  [4, 4, 0, 0, 0, 4, 4, 0],
   [0, 0, 0, 0, 5, 5, 5, 5],
   [0, 6, 6, 0, 6, 6, 0, 0],
   [0, 7, 0, 0, 7, 7, 7, 0],
@@ -21,7 +22,18 @@ function insertShape() {
   var shapeToDisplay = selectRandomShape();
   var m = 0
   var n = 1
-  function doShit() {
+  gameBoard[m][3] = shapeToDisplay[0];
+  gameBoard[m][4] = shapeToDisplay[1];
+  gameBoard[m][5] = shapeToDisplay[2];
+  gameBoard[m][6] = shapeToDisplay[3];
+  gameBoard[n][3] = shapeToDisplay[4];
+  gameBoard[n][4] = shapeToDisplay[5];
+  gameBoard[n][5] = shapeToDisplay[6];
+  gameBoard[n][6] = shapeToDisplay[7];
+  populateDOM();
+  var myVar = setInterval(function(){
+    m++;
+    n++;
     gameBoard[m][3] = shapeToDisplay[0];
     gameBoard[m][4] = shapeToDisplay[1];
     gameBoard[m][5] = shapeToDisplay[2];
@@ -30,15 +42,20 @@ function insertShape() {
     gameBoard[n][4] = shapeToDisplay[5];
     gameBoard[n][5] = shapeToDisplay[6];
     gameBoard[n][6] = shapeToDisplay[7];
-    populateDOM();
-    m++;
-    n++;
-  }
-
-doShit();
-//   while(m!=13) {
-//     setTimeout(doShit(), 1000);
-//   }
+    gameBoard[m-1][3] = 0;
+    gameBoard[m-1][4] = 0;
+    gameBoard[m-1][5] = 0;
+    gameBoard[m-1][6] = 0;
+    gameBoard[n-1][3] = shapeToDisplay[0];
+    gameBoard[n-1][4] = shapeToDisplay[1];
+    gameBoard[n-1][5] = shapeToDisplay[2];
+    gameBoard[n-1][6] = shapeToDisplay[3];
+    populateDOM()
+    if (m === 13 || gameBoard[n+1][4] != 0 || gameBoard[n+1][5] != 0) {
+      clearInterval(myVar);
+      insertShape()
+    }
+  }, 500);
 }
 
 function createGameBoard() {
@@ -61,10 +78,12 @@ function populateDOM() {
     container.appendChild(new_div);
   }
 }
+// insertShape();
+var button = document.querySelector('button')
+button.addEventListener('click', insertShape())
 
 function main() {
-  insertShape();
 
 }
 
-main();
+// main();
