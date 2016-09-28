@@ -78,12 +78,10 @@ function populateDOM() {
     container.appendChild(new_div);
   }
 }
-// insertShape();
-var button = document.querySelector('button')
-button.addEventListener('click', insertShape())
 
+var button = document.querySelector('button')
+button.addEventListener('click', insertShape)
+// insertShape()
 function main() {
 
 }
-
-// main();
