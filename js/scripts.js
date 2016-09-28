@@ -14,12 +14,15 @@ const shapes = [
 var gameBoard = createGameBoard();
 var container = document.querySelector('.container');
 
+
 function selectRandomShape() {
   return shapes[Math.floor(Math.random() * 7)];
 }
 
+var shapeToDisplay = selectRandomShape();
+
 function insertShape() {
-  var shapeToDisplay = selectRandomShape();
+  var nextShapeToDisplay = populateNextItem();
   var m = 0
   var n = 1
   gameBoard[m][3] = shapeToDisplay[0];
@@ -53,6 +56,7 @@ function insertShape() {
     populateDOM()
     if (m === 13 || gameBoard[n+1][4] != 0 || gameBoard[n+1][5] != 0) {
       clearInterval(myVar);
+      shapeToDisplay = nextShapeToDisplay;
       insertShape()
     }
   }, 500);
@@ -74,9 +78,29 @@ function populateDOM() {
   for (var k = 0; k < 150; k++) {
     var new_div = document.createElement('div');
     new_div.classList.add('smallDiv');
+    new_div.classList.add(gameBoard[parseInt(k/10)][k%10] > 0 ? 'shapeDiv' : 'emptyShapeDiv');
     new_div.classList.add(colorList[gameBoard[parseInt(k/10)][k%10]]);
     container.appendChild(new_div);
   }
+}
+
+
+function deletePreviousFields() {
+  document.querySelector('.displayNext').innerHTML = "";
+}
+
+function populateNextItem () {
+  deletePreviousFields();
+  var nextShapeToDisplay = selectRandomShape();
+  var nextItem = document.querySelector('.displayNext');
+  for (var i = 0; i < 8; i++) {
+    var new_div = document.createElement('div');
+    new_div.classList.add('tinyDiv');
+    new_div.classList.add(nextShapeToDisplay[i] > 0 ? 'shapeDiv' : 'emptyShapeDiv');
+    new_div.classList.add(colorList[nextShapeToDisplay[i]]);
+    nextItem.appendChild(new_div);
+  }
+  return nextShapeToDisplay;
 }
 
 var button = document.querySelector('button')

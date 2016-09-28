@@ -25,8 +25,15 @@
 .smallDiv {
   height: 6.66%;
   width: 10%;
-  border: 1px black solid;
   box-sizing: border-box;
+}
+
+.shapeDiv {
+  border: 1px black solid;
+}
+
+.emptyShapeDiv {
+  /*border: 1px black solid;*/
 }
 
 .emptyDiv {
@@ -76,7 +83,7 @@
 }
 
 .nextItem {
-  background-color: brown;
+  background-color: grey;
 }
 
 .score, .nextItem {
@@ -86,4 +93,20 @@
   margin-top: 50px;
   border: 1px solid black;
   text-align: center;
+
+}
+
+
+.tinyDiv {
+  height: 50%;
+  width: 25%;
+  box-sizing: border-box;
+}
+
+.displayNext {
+  display: flex;
+  flex-wrap: wrap;
+  height: 75px;
+  width: 150px;
+  margin: 0 auto;
 }
