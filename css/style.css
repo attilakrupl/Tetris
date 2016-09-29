@@ -12,7 +12,7 @@
   flex-wrap: wrap;
 }
 
-.blanket {
+/*.blanket {
   background-color: white;
   height: 80px;
   width: 440px;
@@ -20,7 +20,7 @@
   position: fixed;
   box-sizing: border-box;
   justify-content: space-between;
-}
+}*/
 
 .smallDiv {
   height: 6.66%;
