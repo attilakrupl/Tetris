@@ -106,9 +106,9 @@ function compareSquaresYcoordToOthersWithinShape(element, list) {
   return thisIsAtTheBottom;
 }
 
-//checkes if curent square has got any other squaers below itself within the shape
+//checkes if curent square has got any other squaers to the left to itself within the shape
 //BOOLEAN
-function compareSquaresXcoordToOthersWithinShape(element, list) {
+function compareSquaresXcoordToLeftSideWithinShape(element, list) {
   var thisIsAtTheVeryLeft = true;
   for (var i = 0; i < list.length; i++) {
     if (element !== list[i]) {
@@ -118,6 +118,20 @@ function compareSquaresXcoordToOthersWithinShape(element, list) {
     }
   }
   return thisIsAtTheVeryLeft;
+}
+
+//checkes if curent square has got any other squaers to the right to itself within the shape
+//BOOLEAN
+function compareSquaresXcoordToRightSideWithinShape(element, list) {
+  var thisIsAtTheVeryRight = true;
+  for (var i = 0; i < list.length; i++) {
+    if (element !== list[i]) {
+      if((element.y_coord == list[i].y_coord) && ((element.x_coord + 1 ) == list[i].x_coord)) {
+        return false;
+      }
+    }
+  }
+  return thisIsAtTheVeryRight;
 }
 
 //returns with the array of the squares which are at the very bottom squares of the shape in each column
@@ -255,7 +269,7 @@ function MoveRight(gameBoard) {
 function getLeftmostSquaresOfShapeArray(shapeArray) {
   var leftmostSquares = [];
   for (var i = 0; i < 4; i++) {
-    if(compareSquaresXcoordToOthersWithinShape(shapeArray[i], shapeArray)){
+    if(compareSquaresXcoordToLeftSideWithinShape(shapeArray[i], shapeArray)){
       leftmostSquares.push(shapeArray[i]);
     }
   }
@@ -273,7 +287,45 @@ function reachedTheLeftWall(leftmostSquares) {
 }
 
 function theresSomethingToTheLeft(gameBoard, leftmostSquares) {
+  var emptyBelow = false;
+  for(var i = 0; i < leftmostSquares.length; i++) {
+    var actualSquare = leftmostSquares[i];
+    if (gameBoard[actualSquare.y_coord][actualSquare.x_coord - 1] > 0) {
+      return true;
+    }
+  }
+  return emptyBelow;
+}
 
+function getRightmostSquaresOfShapeArray(shapeArray) {
+  var rightmostSquares = [];
+  for (var i = 0; i < 4; i++) {
+    if(compareSquaresXcoordToRightSideWithinShape(shapeArray[i], shapeArray)){
+      rightmostSquares.push(shapeArray[i]);
+    }
+  }
+  return rightmostSquares;
+}
+
+function reachedTheRightWall(rightmostSquares) {
+  var reachedTheRight = false;
+  for(var i = 0; i < rightmostSquares.length; i++) {
+    if (rightmostSquares[i].x_coord == 9) {
+      return true;
+    }
+  }
+  return reachedTheRight;
+}
+
+function theresSomethingToTheRight(gameBoard, rightmostSquares) {
+  var emptyBelow = false;
+  for(var i = 0; i < rightmostSquares.length; i++) {
+    var actualSquare = rightmostSquares[i];
+    if (gameBoard[actualSquare.y_coord][actualSquare.x_coord + 1] > 0) {
+      return true;
+    }
+  }
+  return emptyBelow;
 }
 
 

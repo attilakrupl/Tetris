@@ -37,12 +37,36 @@ function autoMoveTheNewShapeDownController(gameBoard, nextShape) {
 
 function userMoveTheShapeLeftController(gameBoard) {
   var leftmostSquares = getLeftmostSquaresOfShapeArray(shapeArray);
-  console.log(leftmostSquares);
+  // console.log(leftmostSquares);
   if (reachedTheLeftWall(leftmostSquares)) {
     //do nothing
   } else if (theresSomethingToTheLeft(gameBoard, leftmostSquares)) {
     //do nothing
   } else {
     MoveLeft(gameBoard);
+  }
+}
+
+function userMoveTheShapeRightController(gameBoard) {
+  var rightmostSquares = getRightmostSquaresOfShapeArray(shapeArray);
+  // console.log(rightmostSquares);
+  if (reachedTheRightWall(rightmostSquares)) {
+    //do nothing
+  } else if (theresSomethingToTheRight(gameBoard, rightmostSquares)) {
+    //do nothing
+  } else {
+    MoveRight(gameBoard);
+  }
+}
+
+function userMoveTheShapeDownController(gameBoard) {
+  var bottomSquares = getBottomSquaresOfTheShape(shapeArray);
+  // console.log(bottomSquares);
+  if (reachedTheBottom(bottomSquares)) {
+    //do nothing
+  } else if (theresSomethingBelowBottomSquares(gameBoard, bottomSquares)) {
+    //do nothing
+  } else {
+    MoveDown(gameBoard, bottomSquares);
   }
 }

@@ -3,11 +3,11 @@ window.addEventListener('keydown', (event) => {
   // console.log(event.keyCode);
   var code = event.keyCode;
   if (code == leftAlpha || code == leftCursor) {
-    MoveLeft(gameBoard);
+    userMoveTheShapeLeftController(gameBoard);
   } else if ((code == rightAlpha) || (code == rightCursor)) {
-    MoveRight(gameBoard);
+    userMoveTheShapeRightController(gameBoard);
   } else if ((code == downAlpha) || (code == downCursor)) {
-    MoveDown(gameBoard);
+    userMoveTheShapeDownController(gameBoard)
   } else if (code == rotate) {
     console.log('rotate');
   }
