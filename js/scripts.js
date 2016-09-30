@@ -2,19 +2,14 @@
 
 const button = document.querySelector('button');
 const container = document.querySelector('.container');
-const colorList = ["emptyDiv", "redDiv", "blueDiv", "yellowDiv", "greenDiv", "whiteDiv", "orangeDiv", "aquamarineDiv" ];
-const shapes = [
-  [0, 0, 0, 1, 0, 1, 1, 1],
-  [2, 0, 0, 0, 2, 2, 2, 0],
-  [0, 3, 3, 0, 0, 3, 3, 0],
-  [4, 4, 0, 0, 0, 4, 4, 0],
-  [0, 0, 0, 0, 5, 5, 5, 5],
-  [0, 6, 6, 0, 6, 6, 0, 0],
-  [0, 7, 0, 0, 7, 7, 7, 0],
-];
 var shapeToDisplay = selectRandomShape();
+var gameLevel = 0;
+var totalScore = 0;
+var shapeArray = [];
+var newShapeArray = [];
 
 //Fills up our game board 15X10 boxes with 0-s
+//GAMEBOARD OBJECT
 function createGameBoard() {
   var gameBoard = {};
   for (var i = 0; i < 15; i++) {
@@ -23,16 +18,17 @@ function createGameBoard() {
       gameBoard[i].push(0);
     }
   }
-  // console.log(gameBoard);
   return gameBoard;
 }
 
 //Selects a shape from our shapes list randomly
+//SHAPE OBJECT
 function selectRandomShape() {
   return shapes[Math.floor(Math.random() * 7)];
 }
 
 //Inserts a randomly selected item into the game board replacing zeros with color codes
+//VOID
 function insertShapeToTopOfGameBoard(gameBoard, shapeToDisplay) {
   var xp = 3;
   for (var i = 0; i < 8; i++) {
@@ -41,12 +37,14 @@ function insertShapeToTopOfGameBoard(gameBoard, shapeToDisplay) {
   populateDOM(gameBoard);
 }
 
-    //Erases the Next Item field so we can display the next one
-    function deletePreviousNextItemFields() {
-      document.querySelector('.displayNext').innerHTML = "";
-    }
+//Erases the Next Item field so we can display the next one
+//VOID
+function deletePreviousNextItemFields() {
+  document.querySelector('.displayNext').innerHTML = "";
+}
 
 //Responsible for displaying the next shape in Next Item field
+//VOID
 function displayShapeInNextItemField(nextShapeToDisplay) {
   var nextItem = document.querySelector('.displayNext');
   for (var i = 0; i < 8; i++) {
@@ -59,6 +57,7 @@ function displayShapeInNextItemField(nextShapeToDisplay) {
 }
 
 //Creates next item, displays it, and returns with that so we can use the actual shape later
+//SHAPE OBJECT
 function handleNextItem () {
   var nextShapeToDisplay = selectRandomShape();
   deletePreviousNextItemFields();
@@ -67,6 +66,7 @@ function handleNextItem () {
 };
 
 //Returns the array of shape elements (squares) so we can handle them individually later
+//ARRAY OF SHAPE SQUARES
 function getActiveShapeObject(gameBoard) {
   var shapeArray = [];
   for (var i = 0; i < 2; i++) {
@@ -80,8 +80,9 @@ function getActiveShapeObject(gameBoard) {
 }
 
 //displays our actual game board in the DOM
+//VOID
 function populateDOM(gameBoard) {
-  container.innerHTML="";
+  container.innerHTML='<div class="blanket"></div>';
   for (var k = 0; k < 150; k++) {
     var new_div = document.createElement('div');
     new_div.classList.add('smallDiv');
@@ -91,7 +92,9 @@ function populateDOM(gameBoard) {
   }
 }
 
-function compareElementsYcoordToOthers(element, list) {
+//checkes if curent square has got any other squaers below itself within the shape
+//BOOLEAN
+function compareSquaresYcoordToOthersWithinShape(element, list) {
   var thisIsAtTheBottom = true;
   for (var i = 0; i < list.length; i++) {
     if (element !== list[i]) {
@@ -103,16 +106,20 @@ function compareElementsYcoordToOthers(element, list) {
   return thisIsAtTheBottom;
 }
 
-function getBottomSquaresOfTheShape(gameBoard, shapeArray) {
+//returns with the array of the squares which are at the very bottom squares of the shape in each column
+//ARRAY
+function getBottomSquaresOfTheShape(shapeArray) {
   var bottomSquares = [];
   for (var i = 0; i < 4; i++) {
-    if(compareElementsYcoordToOthers(shapeArray[i], shapeArray)){
+    if(compareSquaresYcoordToOthersWithinShape(shapeArray[i], shapeArray)){
       bottomSquares.push(shapeArray[i]);
     }
   }
   return bottomSquares;
 }
 
+//checks if there is any other object below any square of the shape
+//BOOLEAN
 function theresNothingBelowBottomSquares(gameBoard, bottomSquares) {
   var emptyBelow = true;
   for(var i = 0; i < bottomSquares.length; i++) {
@@ -124,6 +131,8 @@ function theresNothingBelowBottomSquares(gameBoard, bottomSquares) {
   return emptyBelow;
 }
 
+//Ereases moving shape's previous position from gameboard, overriding it with 0-s
+//VOID
 function removeOldShapeFromGameBoard(shapeArray, gameBoard) {
   for (var i = 0; i < shapeArray.length; i++) {
     var actual = shapeArray[i];
@@ -131,6 +140,8 @@ function removeOldShapeFromGameBoard(shapeArray, gameBoard) {
   }
 }
 
+//Adds moving shapes's new position to the gameboard, overriding new position color codes to shape's color codes
+//VOID
 function addNewShapeToGameBoard(newShapeArray, gameBoard) {
   for (var i = 0; i < newShapeArray.length; i++) {
     var actual = newShapeArray[i];
@@ -138,6 +149,8 @@ function addNewShapeToGameBoard(newShapeArray, gameBoard) {
   }
 }
 
+//checkes if the moving shape reached the bottom of the gameboard
+//BOOLEAN
 function reachedTheBottom(bottomSquares) {
   var reachedTheBottom = false;
   for(var i = 0; i < bottomSquares.length; i++) {
@@ -148,65 +161,65 @@ function reachedTheBottom(bottomSquares) {
   return reachedTheBottom;
 }
 
-function moveTheNewShape(gameBoard, nextShape) {
-  var shapeArray = getActiveShapeObject(gameBoard);
-
-  var myVar = setInterval(function() {
-    var newShapeArray = [];
-    var escapeVariable = false;
-    var bottomSquares = getBottomSquaresOfTheShape(gameBoard, shapeArray);
-
-    if (reachedTheBottom(bottomSquares))
-
-    {
-        escapeVariable = true;
-    }
-
-    else if (!theresNothingBelowBottomSquares(gameBoard, bottomSquares))
-
-    {
-      escapeVariable = true;
-    }
-
-    else if (theresNothingBelowBottomSquares(gameBoard, bottomSquares))
-
-    {
-      for (var i = 0; i < shapeArray.length; i++) {
-        var e = shapeArray[i];
-        console.log(e);
-        console.log({y_coord : e.y_coord+1, x_coord : e.x_coord , color_code : e.color_code});
-        newShapeArray.push({y_coord : e.y_coord+1, x_coord : e.x_coord , color_code : e.color_code});
-      }
-      removeOldShapeFromGameBoard(shapeArray, gameBoard);
-      addNewShapeToGameBoard(newShapeArray, gameBoard);
-      // console.log(shapeArray);
-      // console.log(newShapeArray);
-      shapeArray = newShapeArray;
-      // console.log(shapeArray);
-      bottomSquares = getBottomSquaresOfTheShape(gameBoard, newShapeArray);
-    };
-
-
-    if(escapeVariable == true) {
-      clearInterval(myVar);
-      shapeToDisplay = nextShape;
-      newShape(gameBoard);
-    } else {
-      populateDOM(gameBoard);
-    }
-
-  }, 100);
+//GAME OVER CONTROLLER - Responsible for stopping auto motion interval, and displaying game over message, activating new game button
+//VOID
+function gameOver(myVar) {
+  clearInterval(myVar);
+  console.log("Game Over");
+  container.innerHTML = '<div class="blanket"><p>Game Over!</p></div>';
+  button.disabled = false;
 }
 
+//Responsible for adding +1 to y_coord, so moving shape downwards
+//ARRAY
+function moveShapeOneSquareDown(shapeArray) {
+  var newShapeArray = [];
+  for (var i = 0; i < shapeArray.length; i++) {
+    var e = shapeArray[i];
+    newShapeArray.push({y_coord : e.y_coord+1, x_coord : e.x_coord , color_code : e.color_code});
+  }
+  return newShapeArray;
+}
+
+//Creates the next shape, inserts recent shape into gameBoard, moves shape towards the bottom
+//VOID
 function newShape(gameBoard) {
   var nextShape = handleNextItem();
   insertShapeToTopOfGameBoard(gameBoard, shapeToDisplay);
-  moveTheNewShape(gameBoard, nextShape);
+  autoMoveTheNewShapeDown(gameBoard, nextShape);
 }
 
+//Responsible for moving shape down, and setting all the data related
+//VOID
+function MoveDown(gameBoard, bottomSquares) {
+  newShapeArray = moveShapeOneSquareDown(shapeArray);
+  removeOldShapeFromGameBoard(shapeArray, gameBoard);
+  addNewShapeToGameBoard(newShapeArray, gameBoard);
+  shapeArray = newShapeArray;
+  bottomSquares = getBottomSquaresOfTheShape(newShapeArray);
+}
+
+//MAIN
 function main() {
+  button.disabled = true;
   var gameBoard = createGameBoard();
   newShape(gameBoard);
 }
 
 button.addEventListener('click', main);
+window.addEventListener('keydown', (event) => {
+  // console.log(event.keyCode);
+  var code = event.keyCode;
+  if (code == leftAlpha || code == leftCursor) {
+    console.log('left');
+    moveTheShapeLeft(gameBoard, shapeArray);
+  } else if ((code == upAlpha) || (code == upCursor)) {
+    console.log('up');
+  } else if ((code == rightAlpha) || (code == rightCursor)) {
+    console.log('right');
+  } else if ((code == downAlpha) || (code == downCursor)) {
+    console.log('down');
+  } else if (code == rotate) {
+    console.log('rotate');
+  }
+});
