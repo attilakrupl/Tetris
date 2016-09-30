@@ -1,7 +1,7 @@
 //AUTOMATIC MOTION CONTROLLER
-function autoMoveTheNewShapeDown(gameBoard, nextShape) {
+function autoMoveTheNewShapeDownController(gameBoard, nextShape) {
   shapeArray = getActiveShapeObject(gameBoard);
-
+  var newShapeArray = [];
   var myVar = setInterval(function() {
     var escapeVariable = false;
     var bottomSquares = getBottomSquaresOfTheShape(shapeArray);
@@ -10,15 +10,15 @@ function autoMoveTheNewShapeDown(gameBoard, nextShape) {
         {
           escapeVariable = true;
         }
-    else if (!theresNothingBelowBottomSquares(gameBoard, bottomSquares)  && bottomSquares[0].y_coord == 1)
+    else if (theresSomethingBelowBottomSquares(gameBoard, bottomSquares)  && bottomSquares[0].y_coord == 1)
         {
           gameOver(myVar);
         }
-    else if (!theresNothingBelowBottomSquares(gameBoard, bottomSquares))
+    else if (theresSomethingBelowBottomSquares(gameBoard, bottomSquares))
         {
           escapeVariable = true;
         }
-    else if (theresNothingBelowBottomSquares(gameBoard, bottomSquares))
+    else if (!theresSomethingBelowBottomSquares(gameBoard, bottomSquares))
         {
           MoveDown(gameBoard, bottomSquares);
         };
@@ -32,4 +32,17 @@ function autoMoveTheNewShapeDown(gameBoard, nextShape) {
     }
 
   }, gameSpeed);
+}
+
+
+function userMoveTheShapeLeftController(gameBoard) {
+  var leftmostSquares = getLeftmostSquaresOfShapeArray(shapeArray);
+  console.log(leftmostSquares);
+  if (reachedTheLeftWall(leftmostSquares)) {
+    //do nothing
+  } else if (theresSomethingToTheLeft(gameBoard, leftmostSquares)) {
+    //do nothing
+  } else {
+    MoveLeft(gameBoard);
+  }
 }
