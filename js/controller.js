@@ -34,10 +34,9 @@ function autoMoveTheNewShapeDownController(gameBoard, nextShape) {
   }, gameSpeed);
 }
 
-
+//LEFT MOTION CONTROLLER
 function userMoveTheShapeLeftController(gameBoard) {
   var leftmostSquares = getLeftmostSquaresOfShapeArray(shapeArray);
-  // console.log(leftmostSquares);
   if (reachedTheLeftWall(leftmostSquares)) {
     //do nothing
   } else if (theresSomethingToTheLeft(gameBoard, leftmostSquares)) {
@@ -47,9 +46,9 @@ function userMoveTheShapeLeftController(gameBoard) {
   }
 }
 
+//RIGHT MOTION CONTROLLER
 function userMoveTheShapeRightController(gameBoard) {
   var rightmostSquares = getRightmostSquaresOfShapeArray(shapeArray);
-  // console.log(rightmostSquares);
   if (reachedTheRightWall(rightmostSquares)) {
     //do nothing
   } else if (theresSomethingToTheRight(gameBoard, rightmostSquares)) {
@@ -59,9 +58,9 @@ function userMoveTheShapeRightController(gameBoard) {
   }
 }
 
+//DOWN MOTION CONTROLLER
 function userMoveTheShapeDownController(gameBoard) {
   var bottomSquares = getBottomSquaresOfTheShape(shapeArray);
-  // console.log(bottomSquares);
   if (reachedTheBottom(bottomSquares)) {
     //do nothing
   } else if (theresSomethingBelowBottomSquares(gameBoard, bottomSquares)) {
