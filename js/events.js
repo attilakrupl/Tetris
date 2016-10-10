@@ -8,6 +8,6 @@ window.addEventListener('keydown', (event) => {
   } else if ((code == downAlpha) || (code == downCursor)) {
     userMoveTheShapeDownController(gameBoard)
   } else if (code == rotate) {
-    console.log('rotate');
+    rotateShape();
   }
 });
